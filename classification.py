@@ -25,3 +25,23 @@ ct = ColumnTransformer([("numeric",StandardScaler(),['age','creatinine_phosphoki
 # apply standardization to training and testing features
 X_train = ct.fit_transform(X_train)
 X_test = ct.fit_transform(X_test)
+
+## Prepare labels for classification
+le = LabelEncoder()
+Y_train = le.fit_transform(Y_train.astype(str))
+Y_test = le.transform(Y_test.astype(str))
+# transform labels into a binary vector
+Y_train = to_categorical(Y_train)
+Y_test = to_categorical(Y_test)
+
+## Design the model
+model = Sequential()
+#input layer
+model.add(InputLayer(input_shape = (X_train.shape[1],)))
+# hidden layer
+hidden_layer = Dense(12,activation='relu')
+model.add(hidden_layer)
+# output layer
+model.add(Dense(2,activation='softmax'))
+# compile model
+model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
