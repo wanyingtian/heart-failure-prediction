@@ -45,3 +45,13 @@ model.add(hidden_layer)
 model.add(Dense(2,activation='softmax'))
 # compile model
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+
+## Train and evaluate
+model.fit(X_train, Y_train, epochs=100, batch_size=16, verbose=1)
+loss, acc = model.evaluate(X_test, Y_test, verbose = 0)
+print("Loss", loss, "Accuracy:", acc)
+
+y_estimate = model.predict(X_test, verbose = 0)
+y_estimate = np.argmax(y_estimate, axis=1)
+y_true = np.argmax(Y_test, axis=1)
+print(classification_report(y_true, y_estimate))
